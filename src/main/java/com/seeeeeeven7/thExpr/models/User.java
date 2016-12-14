@@ -18,8 +18,32 @@ public class User {
 	
 	@Size(min=32, max=32)
 	private String passwordMD5;
-	
+
 	private Boolean isAdmin;
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPasswordMD5() {
+		return passwordMD5;
+	}
+
+	public void setPasswordMD5(String passwordMD5) {
+		this.passwordMD5 = passwordMD5;
+	}
 
 	public Boolean getIsAdmin() {
 		return isAdmin;

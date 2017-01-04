@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.seeeeeeven7.thExpr.models.User;
 import com.seeeeeeven7.thExpr.models.UserRepository;
+import com.seeeeeeven7.thExpr.service.CurrentUserHolder;
 
 @Controller
 public class UserController {
@@ -17,10 +18,19 @@ public class UserController {
 	@Autowired
     private UserRepository userRepository;
 	
+	@Autowired
+	private CurrentUserHolder currentUserHolder;
+	
 	@RequestMapping(value = "/api/users", method = RequestMethod.GET)
 	@ResponseBody
-	public List<User> index() {
+	public List<User> getUsers() {
 		return userRepository.findAll();
+	}
+	
+	@RequestMapping(value = "/api/user", method = RequestMethod.GET)
+	@ResponseBody
+	public User getUser() {
+		return currentUserHolder.get();
 	}
 	
 	

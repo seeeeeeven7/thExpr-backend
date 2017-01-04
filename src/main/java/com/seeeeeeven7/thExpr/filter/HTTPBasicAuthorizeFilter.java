@@ -20,10 +20,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seeeeeeven7.thExpr.models.User;
 import com.seeeeeeven7.thExpr.models.UserRepository;
+import com.seeeeeeven7.thExpr.service.CurrentUserHolder;
 public class HTTPBasicAuthorizeFilter implements Filter {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private CurrentUserHolder currentUserHolder;
 	
 	@Override
 	public void destroy() {}
@@ -40,7 +44,7 @@ public class HTTPBasicAuthorizeFilter implements Filter {
 
 			ObjectMapper mapper = new ObjectMapper();
 
-			httpResponse.getWriter().write(mapper.writeValueAsString(""));
+			httpResponse.getWriter().write(mapper.writeValueAsString("Invalid Basic Authentication."));
 			return;
 		} 
 		else {
@@ -67,6 +71,7 @@ public class HTTPBasicAuthorizeFilter implements Filter {
 							String Name = UserArray[0];
 							String Password = UserArray[1];
 							User user = userRepository.findByName(Name);
+							currentUserHolder.set(user);
 							MessageDigest md = MessageDigest.getInstance("MD5");
 							md.update(Password.getBytes());
 							if (user.getPasswordMD5().compareTo(new BigInteger(1, md.digest()).toString(16)) == 0) {
